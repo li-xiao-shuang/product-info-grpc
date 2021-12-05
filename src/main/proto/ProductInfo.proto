@@ -1,0 +1,22 @@
+syntax = "proto3";
+option java_package = "com.example.productinfo";
+
+// 定义消息
+message Product {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+}
+
+// 定义消息
+message ProductId {
+  string value = 1;
+}
+
+
+// 定义服务
+service ProductInfo{
+  rpc addProduct(Product) returns (ProductId);
+  rpc getProduct(ProductId) returns (Product);
+}
+
