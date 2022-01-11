@@ -16,26 +16,20 @@
 
 package com.example.productinfo;
 
-import com.google.common.collect.Lists;
-import com.tencent.polaris.api.core.ProviderAPI;
-import com.tencent.polaris.factory.api.DiscoveryAPIFactory;
-import com.tencent.polaris.grpc.server.ServerAgent;
-import io.grpc.BindableService;
+import com.tencent.polaris.grpc.server.PolarisGrpcServerBuilder;
+import io.grpc.Server;
 
-import java.util.List;
+import java.io.IOException;
 
 /**
  * @author lixiaoshuang
  */
 public class ProductServer {
     
-    private static final ProviderAPI providerAPI = DiscoveryAPIFactory.createProviderAPI();
     
-    
-    public static void main(String[] args) {
-        List<BindableService> services = Lists.newArrayList(new ProductInfoImpl());
-        ServerAgent serverAgent = new ServerAgent(50051, "productService", services, providerAPI);
-        serverAgent.start();
-        providerAPI.destroy();
+    public static void main(String[] args) throws IOException {
+        Server server = PolarisGrpcServerBuilder.forPort(50051).addService(new ProductInfoImpl())
+                .applicationName("productService").build();
+        server.start();
     }
 }
